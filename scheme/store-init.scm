@@ -29,7 +29,9 @@
 ;%                                                                             %
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-(use-modules (lalily-templates scheme store)(lalily-templates scheme definitions))
+(use-modules
+ (lalily-templates scheme store)
+ (lalily-templates scheme definitions))
 
 (re-export LY_NOOP)
 
@@ -266,26 +268,118 @@
    (else val)
    ))
 
-(define-public optionsInit clratree)
-(define-public optionsGet getatree)
+; TODO use oll-core alist-access
+(define-public optionsInit (define-void-function (name)(symbol?) (ly:parser-define! name (list))))
+(define-public optionsGet
+  (define-scheme-function
+   (name vkey)(symbol? list?)
+   (let ((opts (ly:parser-lookup name)))
+     (define (getval ol op)
+       (let ((sym (car op)))
+         (cond
+          ((> (length op) 1)
+           (let ((al (assoc-get sym ol #f)))
+             (if (list? al)
+                 (getval al (cdr op))
+                 #f)))
+          ((= (length op) 1)
+           (assoc-get (car op) ol #f))
+          (else #f))))
+     (if (list? opts)
+         (getval opts path)
+         (begin
+          (ly:input-warning (*location*) "~A is not list (~A)" name opts)
+          #f)
+         ))))
+(define (add-a-tree name sympath val assoc-set-append)
+  (if (string? name) (set! name (string->symbol name)))
+  (let ((opts (ly:parser-lookup name)))
+    (define (setval ol op)
+      (let ((sym (car op))
+            (ol (if (list? ol) ol (begin (ly:input-warning (*location*) "deleting '~A'" ol) '()))))
+        (if (> (length op) 1)
+            (let ((al (assoc-get sym ol '())))
+              (if (not (list? al))
+                  (begin
+                   ;(ly:input-warning location "deleting '~A' = '~A'" sym al)
+                   (set! al '())
+                   ))
+              (assoc-set-append ol sym (setval al (cdr op)))
+              )
+            (let ((ov (assoc-get sym ol #f)))
+              ;(if ov (ly:input-warning location "deleting '~A'" ov))
+              (assoc-set-append ol sym val)
+              )
+            )))
+    (set! opts (setval opts sympath))
+    (ly:parser-define! name opts)
+    ))
+
+(define (add-a-tree name sympath val assoc-set-append)
+  (if (string? name) (set! name (string->symbol name)))
+  (let ((opts (ly:parser-lookup name)))
+    (define (setval ol op)
+      (let ((sym (car op))
+            (ol (if (list? ol) ol (begin (ly:input-warning (*location*) "deleting '~A'" ol) '()))))
+        (if (> (length op) 1)
+            (let ((al (assoc-get sym ol '())))
+              (if (not (list? al))
+                  (begin
+                   ;(ly:input-warning location "deleting '~A' = '~A'" sym al)
+                   (set! al '())
+                   ))
+              (assoc-set-append ol sym (setval al (cdr op)))
+              )
+            (let ((ov (assoc-get sym ol #f)))
+              ;(if ov (ly:input-warning location "deleting '~A'" ov))
+              (assoc-set-append ol sym val)
+              )
+            )))
+    (set! opts (setval opts sympath))
+    (ly:parser-define! name opts)
+    ))
 (define-public optionsSet
   (define-void-function
-   (name sympath val)(string-or-symbol? list? scheme?)
-   (setatree name sympath (atree-deep-copy val))))
+   (name sympath val)(symbol? list? scheme?)
+   (add-a-tree name sympath (atree-deep-copy val)
+     (lambda (l sym val) (assoc-set! l sym val)))
+   ))
 (define-public optionsSetL
   (define-void-function
    (name sympath val)(string-or-symbol? list? list?)
-   (setatree name sympath (atree-deep-copy val))))
+   (optionsSet name sympath val)))
 (define-public optionsAdd
   (define-void-function
    (name sympath val)(string-or-symbol? list? scheme?)
-   (addatree name sympath (atree-deep-copy val))))
+   (add-a-tree name sympath (atree-deep-copy val)
+     (lambda (l sym val)
+       (append (filter (lambda (p) (not (and (pair? p)(equal? (car p) sym)))) l)
+         (list (cons sym val)))))
+   ))
 (define-public optionsAddL
   (define-void-function
    (name sympath val)(string-or-symbol? list? list?)
-   (addatree name sympath (atree-deep-copy val))))
-(define-public optionsRemove rematree)
-(define-public optionsAddAll setatreeall)
+   (optionsAdd name sympath (atree-deep-copy val))))
+(define-public optionsRemove
+  (define-void-function (name sympath)(symbol? list?)
+    (let ((opts (ly:parser-lookup name)))
+      (define (remval ol op)
+        (let ((sym (car op)))
+          (if (> (length op) 1)
+              (let ((al (assoc-get sym ol '())))
+                (set! al (remval al (cdr op)))
+                (if (> (length al) 0)
+                    (map (lambda (p) (if (and (pair? p)(equal? (car p) sym)) (cons sym al) p)) ol)
+                    (filter (lambda (p) (not (and (pair? p)(equal? (car p) sym)))) ol))
+                )
+              (filter (lambda (p) (not (and (pair? p)(equal? (car p) sym)))) ol)
+              )
+          ))
+      (set! opts (remval opts sympath))
+      (ly:parser-define! name opts)
+      )))
+
+;(define-public optionsAddAll setatreeall)
 (define-public optionsInitWith
   (define-void-function (name opts)(symbol? list?)
     (ly:parser-define! name (list))
@@ -296,7 +390,7 @@
         (lambda (path val) ((@@ (lalily laly) add-a-tree) name path val assoc-replace!)))
       )))
 
-
+; TODO these are music/movement/piece/score options
 (define-public getOption
   (define-scheme-function (path field default)((list? '()) string-or-symbol? (scheme? #f))
     (let* ((piece (create-music-path #f path))
@@ -321,6 +415,7 @@
       (set-music-folder! cmf)
       (make-music 'SequentialMusic 'void #t)
       )))
+
 
 (define-public aCreateScore
   (define-music-function (music)(list?)

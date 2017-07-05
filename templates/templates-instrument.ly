@@ -31,11 +31,6 @@
 
 \version "2.19.32"
 
-#(define lalily-relincl-tmp (ly:get-option 'relative-includes))
-#(ly:set-option 'relative-includes #t)
-\include "../lalily.ly"
-#(ly:set-option 'relative-includes lalily-relincl-tmp)
-
 #(define-public (naturalize-pitch p)
    (let ((o (ly:pitch-octave p))
          (a (* 4 (ly:pitch-alteration p)))
