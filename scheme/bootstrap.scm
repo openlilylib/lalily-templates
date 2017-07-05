@@ -30,7 +30,10 @@
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 (use-modules
+ (lily)
  (lalily-templates scheme definitions)
  )
 
-(load-from-path "lalily-templates/scheme/store-init.scm")
+;(load-from-path "lalily-templates/scheme/store-init.scm")
+
+(ly:message "lalily templates ~A" (lalily-version-string))

@@ -33,4 +33,5 @@
 
 (define lalily:version '(0 0 1))
 (define-public (lalily-version) lalily:version)
+(define-public (lalily-version-string) (string-join (map (lambda (v) (format "~A" v)) (lalily-version)) "." 'infix))
 
