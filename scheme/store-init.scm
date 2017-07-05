@@ -29,7 +29,7 @@
 ;%                                                                             %
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-(use-modules (lalily-templates scheme store)(lalily-templates definitions))
+(use-modules (lalily-templates scheme store)(lalily-templates scheme definitions))
 
 (re-export LY_NOOP)
 

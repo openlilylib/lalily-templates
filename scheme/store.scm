@@ -33,6 +33,7 @@
 
 (use-modules
  (lily)
+ (lalily-templates scheme definitions)
  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
