@@ -33,8 +33,8 @@
 
 (use-modules
  (lily)
- (oll-core scheme stack)
- (oll-core scheme tree)
+ (oll-core stack)
+ (oll-core tree)
  (lalily-templates scheme definitions)
  (lalily-templates scheme registry)
  )

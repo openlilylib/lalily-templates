@@ -35,7 +35,7 @@
 
 (use-modules
  (lily)
- (oll-core scheme tree))
+ (oll-core tree))
 
 (define-public (get-registry-val key . def) #f)
 (define-public (set-registry-val key val) #f)

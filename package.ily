@@ -30,7 +30,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include "oll-core/package.ily"
-\include "oll-core/include-pattern/module.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
 
 \optionsInit opts
