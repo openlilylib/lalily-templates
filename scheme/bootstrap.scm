@@ -32,6 +32,7 @@
 (use-modules
  (lily)
  (lalily-templates scheme definitions)
+ (lalily-templates scheme registry)
  )
 
 (load-from-path "lalily-templates/scheme/store-init.scm")

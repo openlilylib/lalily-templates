@@ -237,10 +237,10 @@
       (set-default-template piece tmpl opts)
       )
     (make-music 'SequentialMusic 'void #t)))
-(define-public getOptions
+(define-public getScoreOptions
   (define-scheme-function (path)(list?)
     (get-default-options (create-music-path #f path))))
-(define-public setOptions
+(define-public setScoreOptions
   (define-void-function (path opts)(list? list?)
     (let* ((piece (create-music-path #f path))
            (cmf (get-music-folder))
@@ -249,7 +249,7 @@
       (set-default-template piece tmpl opts)
       (set-music-folder! cmf)
       )))
-(define-public addOptions
+(define-public addScoreOptions
   (define-void-function (path opts)(list? list?)
     (let* ((piece (create-music-path #f path))
            (dopts (get-default-options piece))
@@ -391,7 +391,7 @@
       )))
 
 ; TODO these are music/movement/piece/score options
-(define-public getOption
+(define-public getScoreOption
   (define-scheme-function (path field default)((list? '()) string-or-symbol? (scheme? #f))
     (let* ((piece (create-music-path #f path))
            (opts (get-default-options piece))
@@ -399,7 +399,7 @@
       (if (string? field) (set! field (string->symbol field)))
       (assoc-get field opts default)
       )))
-(define-public setOption
+(define-public setScoreOption
   (define-music-function (piece field val)((list? '()) string-or-symbol? scheme?)
     (let ((cmf (get-music-folder)))
       (if (string? field) (set! field (string->symbol field)))
@@ -407,7 +407,7 @@
       (set-music-folder! cmf)
       (make-music 'SequentialMusic 'void #t)
       )))
-(define-public removeOption
+(define-public removeScoreOption
   (define-music-function (piece field)((list? '()) string-or-symbol?)
     (let ((cmf (get-music-folder)))
       (if (string? field) (set! field (string->symbol field)))

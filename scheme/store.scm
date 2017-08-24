@@ -42,7 +42,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; path substitution
 
- ; TODO should be in oll-core!
+; TODO should be in oll-core or somewhere else!
+(define-public (normalize-path path)
+  "create list, removing '.. elements
+example: (normalize-path '(a b .. c d)) ==> '(a c d)"
+  (let ((ret '()))
+    (for-each
+     (lambda (e)
+       (set! ret
+             (cond
+              ((eq? e '..)(if (> (length ret) 1) (cdr ret) '()))
+              ((eq? e '.) ret)
+              (else (cons e ret))))) path)
+    (reverse ret)))
+
 (define-public (glue-list lst . glue)
   "create string from list containing arbitrary objects"
   (string-join (map (lambda (s) (object->string s display)) lst) (if (> (length glue) 0)(car glue) ":") 'infix))

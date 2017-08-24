@@ -30,14 +30,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \include "oll-core/package.ily"
+\include "oll-core/util/include-pattern.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
+\loadPackage edition-engraver
+
 
 \optionsInit opts
 \optionsAddL opts template lalily.piano
 \optionsAdd opts title "Hallo Welt!"
 
 #(display opts)
+#(newline)
+#(display (normalize-path `(a b c .. d e ,'. f g)))
+#(newline)
 
-%\setMusicFolder my.music
-%\includePattern "templates" ".*\\.ily"
+\setMusicFolder my.music
+\includePattern "templates" ".*\\.ily"
 
