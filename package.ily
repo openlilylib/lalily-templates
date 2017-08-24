@@ -32,7 +32,8 @@
 \include "oll-core/package.ily"
 \include "oll-core/util/include-pattern.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
-\loadPackage edition-engraver
+% This should be load per template file
+%\loadPackage edition-engraver
 
 
 \optionsInit opts
