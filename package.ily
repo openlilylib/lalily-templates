@@ -42,17 +42,24 @@
 
 #(display opts)
 #(newline)
-#(display (normalize-path `(a b c .. d e ,'. f g)))
+lst = #`(a b c .. d e ,'. f g)
+#(display lst)
 #(newline)
-
-\setMusicFolder my.music
-\includePattern "templates" ".*\\.ily"
-\setDefaultTemplate song.test generic #'()
-\setTitle "Hallo Welt"
-\putMusic \relative { bes'4 a c b }
+#(display (normalize-path lst))
+#(newline)
 
 \registerTemplate generic
 #(define-music-function (opts)(list?)
    #{ \getMusic #'() #})
 
-\callTemplate generic #'() #'()
+%\setMusicFolder my.music % OK
+\includePattern "templates" ".*\\.ily"
+\setDefaultTemplate song.test generic #'()
+\setTitle "Hallo Welt"
+\putMusic \relative { bes'4 a c b }
+
+
+%\callTemplate generic #'() #'() % OK
+\createScore #'()
+
+
