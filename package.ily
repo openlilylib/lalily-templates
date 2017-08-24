@@ -32,10 +32,9 @@
 \include "oll-core/package.ily"
 \include "oll-core/util/include-pattern.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
-% This should be loaded per template file
-%\loadPackage edition-engraver
+\loadPackage edition-engraver
 
-
+%{ some tests
 \optionsInit opts
 \optionsAddL opts template lalily.piano
 \optionsAdd opts title "Hallo Welt!"
@@ -47,6 +46,7 @@ lst = #`(a b c .. d e ,'. f g)
 #(newline)
 #(display (normalize-path lst))
 #(newline)
+%}
 
 \registerTemplate generic
 #(define-music-function (opts)(list?)
@@ -62,4 +62,76 @@ lst = #`(a b c .. d e ,'. f g)
 %\callTemplate generic #'() #'() % OK
 \createScore #'()
 
+#(define (add-sco-mup pre-markup score post-markup)
+   (begin
+    (cond ((markup? pre-markup)
+           (begin
+            (add-score (list pre-markup))
+            (add-music #{ \noPageBreak #})))
+      ((markup-list? pre-markup)
+       (add-score pre-markup))
+      )
+    (add-score score)
+    (cond ((markup? post-markup)
+           (begin
+            (add-music #{ \noPageBreak #})
+            (add-score (list post-markup))))
+      ((markup-list? post-markup)
+       (add-score post-markup))
+      )
+    ))
 
+% command to create one score based on the current "music folder"
+lalilyCreate =
+#(define-void-function ()()
+   (let ((score #{
+     \score {
+       \createScore #'()
+       \header { }
+     }
+           #})
+         (bookpart #{
+           \bookpart {
+             \paper {
+               $(get-music-folder-paper)
+             }
+             \header { }
+           }
+           #})
+         (pre-markup (ly:assoc-get 'pre-markup (get-default-options (get-music-folder)) #f #f))
+         (post-markup (ly:assoc-get 'post-markup (get-default-options (get-music-folder)) #f #f))
+         (headers (assoc-get 'header (get-music-folder-options) '()))
+         (copyright (get-registry-val '(lalily header copyright) #f))
+         (dolayout (not (eq? (get-registry-val lalily:create #t) 'NoLayout)))
+         (domidi (not (eq? (get-registry-val lalily:create #t) 'NoMidi)))
+         )
+     (if dolayout
+         (begin
+          (ly:score-add-output-def! score #{
+            \layout {
+              $(get-music-folder-layout)
+              \context {
+                \Score
+                %\consists \editionEngraver ##f
+                "lalily:music-folder" = $(get-music-folder)
+                edition-id = $(get-music-folder)
+              }
+              \context {
+                \Voice
+                %\consists \editionEngraver ##f
+              }
+            }
+            #})
+          ))
+     (if domidi (ly:score-add-output-def! score (get-music-folder-midi)))
+     (if (and copyright (not (assoc-get 'copyright headers)))
+         (set! headers (assoc-set! headers 'copyright copyright)))
+     ;(set-book-headers! bookpart headers)
+     (log-music-folder)
+     (ly:parser-define! '$current-bookpart bookpart)
+     (add-sco-mup pre-markup score post-markup)
+     (collect-bookpart-for-book bookpart)
+     (write-lalily-log-file)
+     ))
+
+%\lalilyCreate % not working!

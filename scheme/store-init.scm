@@ -61,7 +61,7 @@
               (def (ly:assoc-get 'defaults options #t #f))
               (quot (ly:assoc-get 'quotes options #t #f))
               (edit (ly:assoc-get 'edition-mods options #t #f)))
-          (format #t "lalily V ~A @ ~A" (glue-list lalily:version ".") (strftime "%d.%m.%Y %H:%M:%S" lalily:init))(newline)
+          (format #t "lalily V ~A @ ~A" (glue-list (lalily-version) ".") (strftime "%d.%m.%Y %H:%M:%S" lalily:init))(newline)
           (if incl (begin
                     (display "Includes: ---")(newline)
                     (for-each (lambda (p) (format #t "'~A'" p)(newline))

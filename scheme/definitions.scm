@@ -35,7 +35,10 @@
 (define-public (lalily-version) lalily:version)
 (define-public (lalily-version-string) (string-join (map (lambda (v) (format "~A" v)) (lalily-version)) "." 'infix))
 
+(define-public lalily:init (localtime (current-time)))
+
 (define-public lalily:store:path-variables '(lalily store path-variables))
 (define-public lalily:get-music-load-callbacks '(lalily store load-callbacks))
 (define-public lalily:get-music-store-callbacks '(lalily store store-callbacks))
 
+(define-public lalily:create '(lalily template create))
