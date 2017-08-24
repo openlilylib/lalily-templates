@@ -32,7 +32,7 @@
 \include "oll-core/package.ily"
 \include "oll-core/util/include-pattern.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
-% This should be load per template file
+% This should be loaded per template file
 %\loadPackage edition-engraver
 
 
@@ -47,4 +47,12 @@
 
 \setMusicFolder my.music
 \includePattern "templates" ".*\\.ily"
+\setDefaultTemplate song.test generic #'()
+\setTitle "Hallo Welt"
+\putMusic \relative { bes'4 a c b }
 
+\registerTemplate generic
+#(define-music-function (opts)(list?)
+   #{ \getMusic #'() #})
+
+\callTemplate generic #'() #'()

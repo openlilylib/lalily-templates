@@ -33,6 +33,7 @@
 
 (use-modules
  (lily)
+ (srfi srfi-1)
  (oll-core stack)
  (oll-core tree)
  (lalily-templates scheme definitions)
@@ -268,6 +269,7 @@ example: (normalize-path '(a b .. c d)) ==> '(a c d)"
     (list? list?)
     ,code))
 
+
 (define-public (register-template name music) #f)
 (define-public (get-template name) #f)
 (define-public (call-template name piece options) #f)
@@ -278,6 +280,29 @@ example: (normalize-path '(a b .. c d)) ==> '(a c d)"
 (define-public (get-current-template) #f)
 (define-public (display-template-stack) #f)
 
+
+(define-public (lalily-template? fun)
+  (if
+   (ly:music-function? fun)
+   (let ((sig (cdr (ly:music-function-signature fun))))
+     (and
+      (or (= 1 (length sig))(= 2 (length sig)))
+      (every (lambda (pred) (equal? pred list?)) sig)
+      ))
+   #f))
+
+(define-public (call-template-function tmpl options)
+  (if (lalily-template? tmpl)
+      (let ((sig (cdr (ly:music-function-signature tmpl))))
+        (if (= 2 (length sig))
+            (tmpl (get-current-music) options)
+            (tmpl options)))
+      (begin
+       (ly:warning "Not a template function! ~A" tmpl)
+       (make-music 'SequentialMusic 'void #t))
+      ))
+
+
 (let* ((templ-tree (tree-create 'template))
        (empty-function (define-music-function (piece options)(list? list?)
                          (get-music piece)
@@ -286,28 +311,31 @@ example: (normalize-path '(a b .. c d)) ==> '(a c d)"
        (call-template-stack (stack-create))
        (call-template-extra '())
        )
-  (set! register-template (lambda (name fun)
-                            (tree-set! templ-tree name fun) ))
-  (set! get-template (lambda (name)
-                       (let* ((f (tree-get templ-tree name))
-                              (error (lambda () (ly:input-message (*location*) "unknown template '~A'" name)
-                                       (ly:message "unknown template '~A'" name))))
-                         (if (not (ly:music-function? f))(set! f
-                                                               (begin (error) empty-function)))
-                         f)))
-  (set! call-template (lambda (name piece options)
-                        (let ((tmpl (get-template name)))
-                          (add-template-ref name 'template)
-                          (if (ly:music-function? tmpl)
-                              (let ((mus #f))
-                                (push call-template-stack name)
-                                (push call-music-stack piece)
-                                (set! mus (tmpl piece options))
-                                (pop call-music-stack)
-                                (pop call-template-stack)
-                                mus)
-                              (make-music 'SimultaneousMusic 'void #t))
-                          )))
+  (set! register-template
+        (lambda (name fun)
+          (tree-set! templ-tree name fun) ))
+  (set! get-template
+        (lambda (name)
+          (let* ((f (tree-get templ-tree name))
+                 (error (lambda () (ly:input-message (*location*) "unknown template '~A'" name)
+                          (ly:message "unknown template '~A'" name))))
+            (if (not (ly:music-function? f))(set! f
+                                                  (begin (error) empty-function)))
+            f)))
+  (set! call-template
+        (lambda (name piece options)
+          (let ((tmpl (get-template name)))
+            (add-template-ref name 'template)
+            (if (lalily-template? tmpl)
+                (let ((mus #f))
+                  (push call-template-stack name)
+                  (push call-music-stack piece)
+                  (set! mus (call-template-function tmpl options))
+                  (pop call-music-stack)
+                  (pop call-template-stack)
+                  mus)
+                (make-music 'SimultaneousMusic 'void #t))
+            )))
 
   (set! get-current-music (lambda () (get call-music-stack)))
   (set! display-music-stack (lambda () (display call-music-stack)))
