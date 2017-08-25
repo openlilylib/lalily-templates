@@ -64,11 +64,11 @@
                  (lambda (p)
                    (and
                     (pair? p)
-                    (not (string-startswith (format "~A" (car p)) "G_"))))
+                    (not (string-startswith (format "~A" (car p)) "_"))))
                  options)) ; (assoc-get 'part options (assoc-get 'element options '())))
-          (group (assoc-get 'G_group options #f))
-          (group-mods (assoc-get 'G_group-mods options #f))
-          (remove-tags (assoc-get 'G_remove-tags options #f))
+          (group (assoc-get '_group options #f))
+          (group-mods (assoc-get '_group-mods options #f))
+          (remove-tags (assoc-get '_remove-tags options #f))
           (parts (if (> (length elms) 0)
                      (make-music 'SimultaneousMusic 'elements
                        (map
@@ -88,7 +88,6 @@
          #{
            \new $group \with {
              $(if (ly:context-mod? group-mods) group-mods)
-             \consists \editionEngraver $piece
            } $parts
          #}
          parts
@@ -98,7 +97,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Transpose
 
-\registerTemplate lalily.transpose
+\registerTemplate transpose
 #(define-music-function (piece options)(list? list?)
    (let ((template (ly:assoc-get 'template options #f #f))
          (opts (let ((pce (ly:assoc-get 'piece options #f #f))) (if pce (get-default-options pce) options)))
@@ -154,7 +153,7 @@
 setTransposedTemplate =
 #(define-void-function (t1 t2 piece tmpl options)
    (ly:pitch? ly:pitch? list? list? list?)
-   (set-default-template piece '(lalily transpose)
+   (set-default-template piece '(transpose)
      (assoc-set-all! options
        `((transpose . ,(ly:pitch-diff t2 t1))
          (template . ,tmpl)))))

@@ -498,7 +498,7 @@
 (define-public inheritAllHeaders
   (define-void-function (path)(list?)
     (let* ((p (create-music-path #f path))
-           (head (assoc-get 'header (get-default-options p) '() #f)))
+           (head (assoc-get '_header (get-default-options p) '() #f)))
       (for-each
        (lambda (p)
          (music-folder-header-set! (car p) (cdr p))
@@ -539,7 +539,7 @@
 
 (define-public (get-default-paper piece)
   (let* ((opts (get-default-options piece))
-         (paper (ly:assoc-get 'paper opts #f #f)))
+         (paper (ly:assoc-get '_paper opts #f #f)))
     (if (ly:output-def? paper) paper #{ \paper { } #})))
 (define-public (get-music-folder-paper)
   (get-default-paper (get-music-folder)))
@@ -548,12 +548,12 @@
     (let* ((piece (get-music-folder))
            (tmpl (get-default-template piece))
            (opts (get-default-options piece)))
-      (set-default-template piece tmpl (assoc-set! opts 'paper paper))
+      (set-default-template piece tmpl (assoc-set! opts '_paper paper))
       )))
 
 (define-public (get-default-layout piece)
   (let* ((opts (get-default-options piece))
-         (layout (ly:assoc-get 'layout opts #f #f)))
+         (layout (ly:assoc-get '_layout opts #f #f)))
     (if (ly:output-def? layout) layout #{ \layout { } #})))
 (define-public (get-music-folder-layout)
   (get-default-layout (get-music-folder)))
@@ -562,7 +562,7 @@
     (let* ((piece (get-music-folder))
            (tmpl (get-default-template piece))
            (opts (get-default-options piece)))
-      (set-default-template piece tmpl (assoc-set! opts 'layout layout))
+      (set-default-template piece tmpl (assoc-set! opts '_layout layout))
       )))
 
 (define-public (get-default-midi piece)

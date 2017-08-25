@@ -37,16 +37,6 @@
 
 \includePattern "templates" ".*\\.ily"
 
-\optionsInit opts
-\optionsAddL opts piano.template lalily.piano
-
-\setDefaultTemplate song.test group #opts
-\setTitle "Hallo Welt"
-\putMusic piano \relative { bes'4 a c b }
-
-%\callTemplate generic #'() #'() % OK
-%\createScore #'()
-
 #(define (add-sco-mup pre-markup score post-markup)
    (begin
     (cond ((markup? pre-markup)
@@ -85,7 +75,8 @@ lalilyCreate =
            #})
          (pre-markup (ly:assoc-get 'pre-markup (get-default-options (get-music-folder)) #f #f))
          (post-markup (ly:assoc-get 'post-markup (get-default-options (get-music-folder)) #f #f))
-         (headers (assoc-get 'header (get-music-folder-options) '()))
+         (headers (assoc-get '_header (get-music-folder-options) '()))
+         (edition-id (assoc-get '_edition-id (get-music-folder-options) (get-music-folder)))
          (copyright (get-registry-val '(lalily header copyright) #f))
          (dolayout (not (eq? (get-registry-val lalily:create #t) 'NoLayout)))
          (domidi (not (eq? (get-registry-val lalily:create #t) 'NoMidi)))
@@ -97,13 +88,11 @@ lalilyCreate =
               $(get-music-folder-layout)
               \context {
                 \Score
-                %\consists \editionEngraver ##f
                 "lalily:music-folder" = $(get-music-folder)
-                edition-id = $(get-music-folder)
+                edition-id = $(if (list? edition-id) edition-id '())
               }
               \context {
                 \Voice
-                %\consists \editionEngraver ##f
               }
             }
             #})
@@ -118,6 +107,4 @@ lalilyCreate =
      (collect-bookpart-for-book bookpart)
      (write-lalily-log-file)
      ))
-
-\lalilyCreate
 
