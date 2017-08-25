@@ -1,0 +1,20 @@
+#
+# openLilyLib/lalily-templates configuration
+#
+
+name: lalily-templates
+display-name: lalily-templates
+short-description: Management of templates
+description: <
+  The lalily-templates are music-functions that can create scores in
+  a composite manner.
+  (TBC)
+  >
+oll-core: 0.5.0
+maintainers: [
+  Jan-Peter Voigt <jp.voigt@gmx.de>
+  ]
+version: 0.0.1
+license: GPL3
+website: https://github.com/jpvoigt/lalily-templates
+repository: https://github.com/jpvoigt/lalily-templates.git
