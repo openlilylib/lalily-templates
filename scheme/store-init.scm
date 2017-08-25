@@ -61,13 +61,7 @@
               (def (ly:assoc-get 'defaults options #t #f))
               (quot (ly:assoc-get 'quotes options #t #f))
               (edit (ly:assoc-get 'edition-mods options #t #f)))
-          (format #t "lalily V ~A @ ~A" (glue-list (lalily-version) ".") (strftime "%d.%m.%Y %H:%M:%S" lalily:init))(newline)
-          (if incl (begin
-                    (display "Includes: ---")(newline)
-                    (for-each (lambda (p) (format #t "'~A'" p)(newline))
-                      (get-registry-val '(lalily runtime loaded)))
-                    (newline)
-                    ))
+          (format #t "lalily-templates V ~A @ ~A" (glue-list (lalily-version) ".") (strftime "%d.%m.%Y %H:%M:%S" lalily:init))(newline)
           (if reg (begin
                    (display "Registry: ---")(newline)
                    (display-registry)
@@ -101,11 +95,6 @@
           (if quot (begin
                     (display "Musik Quotes: ---")(newline)
                     (display-quotes)
-                    (newline)
-                    ))
-          (if edit (begin
-                    (display "Edition Modifications: ---")(newline)
-                    (display-mods)
                     (newline)
                     ))
           )))

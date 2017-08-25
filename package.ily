@@ -33,34 +33,19 @@
 \include "oll-core/util/include-pattern.ily"
 #(load-from-path "lalily-templates/scheme/bootstrap.scm")
 \loadPackage edition-engraver
+#(use-modules (lalily-templates scheme util))
 
-%{ some tests
-\optionsInit opts
-\optionsAddL opts template lalily.piano
-\optionsAdd opts title "Hallo Welt!"
-
-#(display opts)
-#(newline)
-lst = #`(a b c .. d e ,'. f g)
-#(display lst)
-#(newline)
-#(display (normalize-path lst))
-#(newline)
-%}
-
-\registerTemplate generic
-#(define-music-function (opts)(list?)
-   #{ \getMusic #'() #})
-
-%\setMusicFolder my.music % OK
 \includePattern "templates" ".*\\.ily"
-\setDefaultTemplate song.test generic #'()
-\setTitle "Hallo Welt"
-\putMusic \relative { bes'4 a c b }
 
+\optionsInit opts
+\optionsAddL opts piano.template lalily.piano
+
+\setDefaultTemplate song.test group #opts
+\setTitle "Hallo Welt"
+\putMusic piano \relative { bes'4 a c b }
 
 %\callTemplate generic #'() #'() % OK
-\createScore #'()
+%\createScore #'()
 
 #(define (add-sco-mup pre-markup score post-markup)
    (begin
@@ -126,7 +111,7 @@ lalilyCreate =
      (if domidi (ly:score-add-output-def! score (get-music-folder-midi)))
      (if (and copyright (not (assoc-get 'copyright headers)))
          (set! headers (assoc-set! headers 'copyright copyright)))
-     ;(set-book-headers! bookpart headers)
+     (set-book-headers! bookpart headers)
      (log-music-folder)
      (ly:parser-define! '$current-bookpart bookpart)
      (add-sco-mup pre-markup score post-markup)
@@ -134,4 +119,5 @@ lalilyCreate =
      (write-lalily-log-file)
      ))
 
-%\lalilyCreate % not working!
+\lalilyCreate
+

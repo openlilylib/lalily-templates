@@ -38,7 +38,10 @@
  (oll-core tree)
  (lalily-templates scheme definitions)
  (lalily-templates scheme registry)
+ (lalily-templates scheme util)
  )
+
+((@@ (lily) translator-property-description) 'lalily:music-folder list? "music folder for this context")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; path substitution
@@ -383,6 +386,7 @@ example: (normalize-path '(a b .. c d)) ==> '(a c d)"
 
 (define-public musicPath (define-scheme-function (path)(list?)(create-music-path #f path)))
 (define-public templatePath (define-scheme-function (path)(list?)(create-template-path #f path)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; store music options
