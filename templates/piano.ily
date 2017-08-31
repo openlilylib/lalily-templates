@@ -29,46 +29,51 @@
 %                                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include "oll-core/package.ily"
-\loadPackage lalily-templates
+\version "2.19.60"
 
-\optionsInit opts
-% these settings are for demonstration
-\optionsAdd opts #'(_group) #'StaffGroup
-\optionsAdd opts #'(_group-mods) \with { \override NoteHead.color = #darkgreen }
-\optionsAddL opts choir.#'(_template) lalily.vocal.group
-\optionsAddL opts choir.lyrics LY_UP.LY_UP.melody
-\optionsAddL opts melody.#'(_template) lalily.vocal
-\optionsAdd opts melody.vocname "melody"
-\optionsAddL opts piano.#'(_template) lalily.piano
-
-%\callTemplate generic musik #'() % OK
-%\createScore #'() % OK
-
-%%% OK:
-\setDefaultTemplate song.test group #opts
-\setTitle "Hallo Welt"
-
-\putMusic meta {
-  \key f \major \time 4/4 s1 \bar "|."
-}
-
-\putMusic choir.sop \relative { bes'4 a c b }
-\putMusic choir.alt \relative { bes4 a c b }
-\putMusic choir.ten \relative { bes4 a c b }
-\putMusic choir.bas \relative { bes,4 a c b }
-
-\putMusic melody \relative { f''4 e g fis }
-\putMusic melody.lyrics \lyricmode {
-  la la la la
-}
-
-\putMusic piano.dynamics { s1\p\< <>\! }
-\putMusic piano.right \relative { bes'4 a c b }
-\putMusic piano.left \relative { bes,4 c d e }
-\putMusic piano.pedal { s2.\sustainOn s4\sustainOff }
-
-% if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
-\lalilyTest
-
+\registerTemplate lalily.piano
+#(define-music-function (piece options)(list? list?)
+   (let ((mods (assoc-get 'context-mods options #f #f))
+         (smods (assoc-get 'staff-mods options #f #f))
+         (rmods (assoc-get 'right-mods options #f #f))
+         (lmods (assoc-get 'left-mods options #f #f))
+         (dmods (assoc-get 'dynamic-mods options #f #f))
+         (pmods (assoc-get 'pedal-mods options #f #f))
+         (rclef (assoc-get 'right-clef options "G" #f))
+         (lclef (assoc-get 'left-clef options "bass" #f))
+         (right-name (assoc-get 'right-name options "right" #f))
+         (left-name (assoc-get 'left-name options "left" #f))
+         )
+     #{
+       \new PianoStaff \with {
+         \editionID ##f $piece
+         $(if (ly:context-mod? mods) mods)
+       } <<
+         \new Staff = $right-name \with {
+           \editionID right
+           $(if (ly:context-mod? smods) smods)
+           $(if (ly:context-mod? rmods) rmods)
+         } <<
+           \keepWithTag #'piano-right \getMusicDeep {} #'meta
+           \keepWithTag #'piano-right { \getMusic {} global \getMusic right }
+         >>
+         \new Dynamics \with {
+           \editionID dynamics
+           \override DynamicText.padding = #1
+           $(if (ly:context-mod? dmods) dmods)
+         } { \getMusic {} dynamics }
+         \new Staff = $left-name \with {
+           \editionID left
+           $(if (ly:context-mod? smods) smods)
+           $(if (ly:context-mod? lmods) lmods)
+         } <<
+           \keepWithTag #'piano-left \getMusicDeep {} #'meta
+           \keepWithTag #'piano-left { \getMusic {} global \clef $lclef \getMusic left }
+         >>
+         \new Dynamics \with {
+           \editionID pedal
+           $(if (ly:context-mod? pmods) pmods)
+         } \getMusic {} pedal
+       >>
+     #}))
 

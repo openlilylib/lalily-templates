@@ -57,9 +57,16 @@
      #}))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% deprecate template
+
+deprecateTemplate =
+#(define-void-function (parser location)()
+   (ly:input-warning location "template [~A] is deprecated!" (glue-list (get-current-template) ".")))
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% create a group
 \registerTemplate group
-#(define-music-function (piece options)(list? list?)
+#(define-music-function (options)(list?)
    (let* ((elms (filter
                  (lambda (p)
                    (and
@@ -74,8 +81,8 @@
                        (map
                         (lambda (p)
                           (let* ((opts (cdr p))
-                                 (template (assoc-get 'template opts '(generic)))
-                                 (path (assoc-get 'music opts (list (car p))))
+                                 (template (assoc-get '_template opts '(generic)))
+                                 (path (assoc-get '_music opts (list (car p))))
                                  (part #{ \callTemplate ##t #template #path #opts #})
                                  )
                             (if (and (list? remove-tags)(> (length remove-tags) 0))
@@ -98,7 +105,7 @@
 %%% Transpose
 
 \registerTemplate transpose
-#(define-music-function (piece options)(list? list?)
+#(define-music-function (options)(list?)
    (let ((template (ly:assoc-get 'template options #f #f))
          (opts (let ((pce (ly:assoc-get 'piece options #f #f))) (if pce (get-default-options pce) options)))
          (pce (ly:assoc-get 'piece options piece #f))
@@ -157,4 +164,21 @@ setTransposedTemplate =
      (assoc-set-all! options
        `((transpose . ,(ly:pitch-diff t2 t1))
          (template . ,tmpl)))))
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% mirror another music-folder
+
+% needs option 'mirror-path
+% may set other options fo the inherited templated
+\registerTemplate lalily.mirror
+#(define-music-function (options)(list?)
+   (let ((path (assoc-get 'mirror-path options #f #f)))
+     (if (not (list? path))
+         (begin
+          (ly:input-warning location "no mirror-path! (~A | ~A)" path piece)
+          (set! path '(..))
+          ))
+     #{
+       \createScoreWithOptions #path #options
+     #}))
 

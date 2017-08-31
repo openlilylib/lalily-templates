@@ -57,6 +57,13 @@ example: (format-alist '((a . 1)(b . 2)))
      (else (format "~A~A~&" (indsp i) l)))
     ))
 
+(define-public (assoc-set-all! lst vls)
+  "set all values from vls in lst"
+  (begin
+   (for-each (lambda (p)
+               (set! lst (assoc-set! lst (car p) (cdr p)))) vls)
+   lst))
+
 
 (define-public (set-book-headers! book header)
   (let ((bookhead (ly:book-header book)))
