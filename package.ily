@@ -108,3 +108,9 @@ lalilyCreate =
      (write-lalily-log-file)
      ))
 
+lalilyTest =
+#(define-void-function ()()
+   (if ((get-registry-val lalily:test-predicate lalily-test-location?) (*parser*) (*location*))
+       (lalilyCreate)
+       ))
+

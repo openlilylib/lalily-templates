@@ -46,6 +46,7 @@
 \setDefaultTemplate song.test group #opts
 \setTitle "Hallo Welt"
 \putMusic musik \relative { bes'4 a c b }
-\lalilyCreate
+% if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
+\lalilyTest
 
 

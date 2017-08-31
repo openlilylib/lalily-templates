@@ -33,6 +33,7 @@
 
 (use-modules
  (lily)
+ (ice-9 regex)
  (srfi srfi-1)
  (lalily-templates scheme store))
 
@@ -79,3 +80,10 @@ example: (format-alist '((a . 1)(b . 2)))
                           (val (cdr p)))
                       (module-define! scorehead key val)))) header)
     ))
+
+(define-public (lalily-test-location? parser location)
+  (let ((outname (ly:parser-output-name parser))
+        (locname (car (ly:input-file-line-char-column location))))
+    (regexp-match? (string-match (format "^(.*/)?~A\\.i?ly$" outname) locname))
+    ))
+

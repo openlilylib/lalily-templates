@@ -41,4 +41,6 @@
 (define-public lalily:get-music-load-callbacks '(lalily store load-callbacks))
 (define-public lalily:get-music-store-callbacks '(lalily store store-callbacks))
 
+(define-public lalily:test-predicate '(lalily util test-location))
+
 (define-public lalily:create '(lalily template create))
