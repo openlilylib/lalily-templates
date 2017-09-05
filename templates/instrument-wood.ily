@@ -29,75 +29,54 @@
 %                                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% TODO clean up for a short example, extra feature showcase in another file!
+\version "2.19.60"
 
-\include "oll-core/package.ily"
-\loadPackage lalily-templates
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% woodwind
 
-\optionsInit opts
-% these settings are for demonstration (and testing)
-\optionsAddL opts #'(_template) group
+\registerTemplate lalily.instrument.oboe
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! options `((name . "oboe")
+                               (midi-instrument . "oboe")
+                               ))))
 
-% two trumpets in B flat (default, other transpositions possible with property 'transposition)
-% TODO why dummy? We could have an _order property, so we can use dot-notation assignment
-\optionsAddL opts trumpet.#'(_dummy) 42  %#'(_template) group
+\registerTemplate lalily.instrument.english-horn
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! options `((name . "english-horn")
+                               (transposition . ,(ly:make-pitch -1 3 0))
+                               (midi-instrument . "english horn")
+                               ))))
 
-% a choir (SATB is default)
-% TODO grouping will be rewritten like the global root. That is all meta data has a prefix '_', all other parts are assumed voices
-\optionsAddL opts choir.#'(_template) lalily.vocal.group
-\optionsAddL opts choir.lyrics LY_UP.LY_UP.melody
-\optionsAddL opts melody.#'(_template) lalily.vocal
-% another vocal part
-\optionsAdd opts melody.vocname "melody"
-% piano
-\optionsAddL opts piano.#'(_template) lalily.piano
+\registerTemplate lalily.instrument.sax.sop
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(.. ..)) piece
+     (assoc-set-all! options `((name . "saxsop")
+                               (transposition . ,(ly:make-pitch -1 6 -1/2)) ; b
+                               (midi-instrument . "soprano sax")
+                               ))))
+\registerTemplate lalily.instrument.sax.alt
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(.. ..)) piece
+     (assoc-set-all! options `((name . "saxalt")
+                               (transposition . ,(ly:make-pitch -1 2 -1/2)) ; ees
+                               (midi-instrument . "alto sax")
+                               ))))
 
-%\callTemplate generic musik #'() % OK
-%\createScore #'() % OK
-
-trumpet.#'(_group) = #'StaffGroup
-trumpet.#'(_group-mods) = \with { \override NoteHead.color = #darkgreen }
-% TODO with this notation parts are in reverse order ... use order property?
-trumpet.II.#'(_template) = lalily.instrument.trumpet
-trumpet.I.#'(_template) = lalily.instrument.trumpet
-\setDefaultTemplate song.test.trumpet group #trumpet
-
-\putMusic I \relative { bes'4 a c b }
-\putMusic II \relative { bes4 a c b }
-
-%%% OK:
-%\setDefaultTemplate song.test group #opts
-%%% OK:
-%\setTransposedTemplate bes c' song.test group #opts
-\setMusicFolder song.test
-\setScoreOptions #'() #opts
-\setTitle "Hallo Welt"
-
-\putMusic meta {
-  \key f \major \time 4/4 s1 \bar "|."
-}
-
-%{
-\putMusic trumpet.I \relative { bes'4 a c b }
-\putMusic trumpet.II \relative { bes'4 a c b }
-%}
-
-\putMusic choir.sop \relative { bes'4 a c b }
-\putMusic choir.alt \relative { bes4 a c b }
-\putMusic choir.ten \relative { bes4 a c b }
-\putMusic choir.bas \relative { bes,4 a c b }
-
-\putMusic melody \relative { f''4 e g fis }
-\putMusic melody.lyrics \lyricmode {
-  la la la la
-}
-
-\putMusic piano.dynamics { s1\p\< <>\! }
-\putMusic piano.right \relative { bes'4 a c b }
-\putMusic piano.left \relative { bes,4 c d e }
-\putMusic piano.pedal { s2.\sustainOn s4\sustainOff }
-
-% if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
-\lalilyTest
+\registerTemplate lalily.instrument.sax.ten
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(.. ..)) piece
+     (assoc-set-all! options `((name . "saxten")
+                               (transposition . ,(ly:make-pitch -2 6 -1/2)) ; b
+                               (midi-instrument . "tenor sax")
+                               ))))
+\registerTemplate lalily.instrument.sax.bar
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(.. ..)) piece
+     (assoc-set-all! options `((name . "saxbar")
+                               (transposition . ,(ly:make-pitch -2 2 -1/2)) ; ees
+                               (midi-instrument . "baritone sax")
+                               ))))
 
 

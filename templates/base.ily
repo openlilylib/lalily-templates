@@ -36,12 +36,21 @@
 
 \registerTemplate generic
 #(define-music-function (piece options)(list? list?)
-   (get-music piece))
+   (let ((tmpl (assoc-get '_template options #f)))
+     (if (list? tmpl)
+         (callTemplate #t tmpl #t piece options)
+         (get-music piece))
+     ))
 
 \registerTemplate NOTFOUND
 #(define-music-function (piece options)(list? list?)
-   (ly:input-message (*location*) "No template specified for [~A]!" (glue-list piece "."))
-   (get-music piece))
+   (let ((tmpl (assoc-get '_template options #f)))
+     (if (list? tmpl)
+         (callTemplate #t tmpl #t piece options)
+         (begin
+          (ly:input-warning (*location*) "No template specified for [~A]!" (glue-list piece "."))
+          (get-music piece))
+         )))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% init contexts
@@ -81,7 +90,9 @@ deprecateTemplate =
                        (map
                         (lambda (p)
                           (let* ((opts (cdr p))
-                                 (template (assoc-get '_template opts '(generic)))
+                                 (music (assoc-get '_music opts (create-music-path #f (list (car p)))))
+                                 (opts (assoc-set-all! (get-default-options music) opts))
+                                 (template (assoc-get '_template opts (get-default-template music)))
                                  (path (assoc-get '_music opts (list (car p))))
                                  (part #{ \callTemplate ##t #template #path #opts #})
                                  )
@@ -105,12 +116,12 @@ deprecateTemplate =
 %%% Transpose
 
 \registerTemplate transpose
-#(define-music-function (options)(list?)
-   (let ((template (ly:assoc-get 'template options #f #f))
-         (opts (let ((pce (ly:assoc-get 'piece options #f #f))) (if pce (get-default-options pce) options)))
-         (pce (ly:assoc-get 'piece options piece #f))
-         (pdiff (ly:assoc-get 'transpose options piece #f) )
-         (natpit (get-option 'naturalize options #f))
+#(define-music-function (piece options)(list? list?)
+   (let ((template (ly:assoc-get '_template options #f #f))
+         (opts (let ((pce (ly:assoc-get '_piece options #f #f))) (if pce (get-default-options pce) options)))
+         (pce (ly:assoc-get '_piece options piece #f))
+         (pdiff (ly:assoc-get '_transpose options piece #f) )
+         (natpit (get-option '_naturalize options #f))
          )
      (define (naturalize-pitch p)
        (let ((o (ly:pitch-octave p))
@@ -162,8 +173,8 @@ setTransposedTemplate =
    (ly:pitch? ly:pitch? list? list? list?)
    (set-default-template piece '(transpose)
      (assoc-set-all! options
-       `((transpose . ,(ly:pitch-diff t2 t1))
-         (template . ,tmpl)))))
+       `((_transpose . ,(ly:pitch-diff t2 t1))
+         (_template . ,tmpl)))))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% mirror another music-folder
