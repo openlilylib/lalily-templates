@@ -36,30 +36,30 @@
 
 \optionsInit opts
 % these settings are for demonstration (and testing)
-\optionsAddL opts #'(_template) group
+\optionsAddL opts "_template" group
 
 % two trumpets in B flat (default, other transpositions possible with property 'transposition)
 % TODO why dummy? We could have an _order property, so we can use dot-notation assignment
-\optionsAddL opts trumpet.#'(_dummy) 42  %#'(_template) group
+\optionsAddL opts trumpet."_dummy" 42  %"_template" group
 
 % a choir (SATB is default)
 % TODO grouping will be rewritten like the global root. That is all meta data has a prefix '_', all other parts are assumed voices
-\optionsAddL opts choir.#'(_template) lalily.vocal.group
+\optionsAddL opts choir."_template" lalily.vocal.group
 \optionsAddL opts choir.lyrics LY_UP.LY_UP.melody
-\optionsAddL opts melody.#'(_template) lalily.vocal
+\optionsAddL opts melody."_template" lalily.vocal
 % another vocal part
 \optionsAdd opts melody.vocname "melody"
 % piano
-\optionsAddL opts piano.#'(_template) lalily.piano
+\optionsAddL opts piano."_template" lalily.piano
 
 %\callTemplate generic musik #'() % OK
 %\createScore #'() % OK
 
-trumpet.#'(_group) = #'StaffGroup
-trumpet.#'(_group-mods) = \with { \override NoteHead.color = #darkgreen }
+trumpet."_group" = #'StaffGroup
+trumpet."_group-mods" = \with { \override NoteHead.color = #darkgreen }
 % TODO with this notation parts are in reverse order ... use order property?
-trumpet.II.#'(_template) = lalily.instrument.trumpet
-trumpet.I.#'(_template) = lalily.instrument.trumpet
+trumpet.II."_template" = lalily.instrument.trumpet
+trumpet.I."_template" = lalily.instrument.trumpet
 \setDefaultTemplate song.test.trumpet group #trumpet
 
 \putMusic I \relative { bes'4 a c b }
