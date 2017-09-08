@@ -57,7 +57,6 @@
 
 trumpet."_group" = #'StaffGroup
 trumpet."_group-mods" = \with { \override NoteHead.color = #darkgreen }
-% TODO with this notation parts are in reverse order ... use order property?
 trumpet.I."_template" = lalily.instrument.trumpet
 trumpet.II."_template" = lalily.instrument.trumpet
 trumpet."_order" = I.II.II
