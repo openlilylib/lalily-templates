@@ -34,13 +34,14 @@
 \include "oll-core/package.ily"
 \loadPackage lalily-templates
 
+% options for full score
 \optionsInit opts
 % these settings are for demonstration (and testing)
 \optionsAddL opts "_template" group
 
 % two trumpets in B flat (default, other transpositions possible with property 'transposition)
-\optionsAdd opts trumpet.III.transposition #(ly:make-pitch 0 3) % F
-\optionsAdd opts trumpet.III.output-concert-pitch ##f
+\optionsAdd opts trumpet.III.transposition #(ly:make-pitch 0 3) % transposition F
+\optionsAdd opts trumpet.III.output-concert-pitch ##f % the transposition of trumpet.III will only effective in the full score!
 
 % a choir (SATB is default)
 % TODO grouping will be rewritten like the global root. That is all meta data has a prefix '_', all other parts are assumed voices
@@ -55,6 +56,7 @@
 %\callTemplate generic musik #'() % OK
 %\createScore #'() % OK
 
+% brass part
 trumpet."_group" = #'StaffGroup
 trumpet."_group-mods" = \with { \override NoteHead.color = #darkgreen }
 trumpet.I."_template" = lalily.instrument.trumpet
@@ -68,7 +70,7 @@ trumpet."_order" = I.II.III
 \putMusic III \relative { bes4 a c b }
 % relative change of current folder
 \changeMusicFolder III
-\setTemplate lalily.instrument.trombone
+\setTemplate lalily.instrument.trombone % this is not transposed
 
 %%% OK:
 %\setDefaultTemplate song.test group #opts
@@ -98,8 +100,10 @@ trumpet."_order" = I.II.III
 \putMusic piano.pedal { s2.\sustainOn s4\sustainOff }
 
 % if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
+% print full score
 \lalilyTest
 
+% print brass part
 \setMusicFolder song.test.trumpet
 \lalilyTest
 
