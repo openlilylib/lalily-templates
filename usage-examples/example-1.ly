@@ -39,8 +39,8 @@
 \optionsAddL opts "_template" group
 
 % two trumpets in B flat (default, other transpositions possible with property 'transposition)
-% TODO why dummy? We could have an _order property, so we can use dot-notation assignment
-\optionsAddL opts trumpet."_dummy" 42  %"_template" group
+\optionsAdd opts trumpet.III.transposition #(ly:make-pitch 0 3) % F
+\optionsAdd opts trumpet.III.output-concert-pitch ##f
 
 % a choir (SATB is default)
 % TODO grouping will be rewritten like the global root. That is all meta data has a prefix '_', all other parts are assumed voices
@@ -59,11 +59,16 @@ trumpet."_group" = #'StaffGroup
 trumpet."_group-mods" = \with { \override NoteHead.color = #darkgreen }
 trumpet.I."_template" = lalily.instrument.trumpet
 trumpet.II."_template" = lalily.instrument.trumpet
-trumpet."_order" = I.II.II
+trumpet."_order" = I.II.III
 \setDefaultTemplate song.test.trumpet group #trumpet
 
 \putMusic I \relative { bes'4 a c b }
 \putMusic II \relative { bes4 a c b }
+
+\putMusic III \relative { bes4 a c b }
+% relative change of current folder
+\changeMusicFolder III
+\setTemplate lalily.instrument.trombone
 
 %%% OK:
 %\setDefaultTemplate song.test group #opts
@@ -76,11 +81,6 @@ trumpet."_order" = I.II.II
 \putMusic meta {
   \key f \major \time 4/4 s1 \bar "|."
 }
-
-%{
-\putMusic trumpet.I \relative { bes'4 a c b }
-\putMusic trumpet.II \relative { bes'4 a c b }
-%}
 
 \putMusic choir.sop \relative { bes'4 a c b }
 \putMusic choir.alt \relative { bes4 a c b }
@@ -100,4 +100,6 @@ trumpet."_order" = I.II.II
 % if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
 \lalilyTest
 
+\setMusicFolder song.test.trumpet
+\lalilyTest
 
