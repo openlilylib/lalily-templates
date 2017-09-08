@@ -76,12 +76,17 @@ deprecateTemplate =
 %%% create a group
 \registerTemplate group
 #(define-music-function (options)(list?)
-   (let* ((elms (filter
-                 (lambda (p)
-                   (and
-                    (pair? p)
-                    (not (string-startswith (format "~A" (car p)) "_"))))
-                 options)) ; (assoc-get 'part options (assoc-get 'element options '())))
+   (let* ((elms
+           (let ((order (ly:assoc-get '_order options #f #f)))
+             (if (and (list? order)(> (length order) 0))
+                 (map (lambda (p)
+                        (cons p (ly:assoc-get p options '() #f))) order)
+                 (filter
+                  (lambda (p)
+                    (and
+                     (pair? p)
+                     (not (string-startswith (format "~A" (car p)) "_"))))
+                  options)))) ; (assoc-get 'part options (assoc-get 'element options '())))
           (group (assoc-get '_group options #f))
           (group-mods (assoc-get '_group-mods options #f))
           (remove-tags (assoc-get '_remove-tags options #f))
