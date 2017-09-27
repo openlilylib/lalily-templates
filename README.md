@@ -63,7 +63,7 @@ opts.B."_template" = lalily.instrument.trombone
 
 % the current folder is still mymusic/piece/42 so any call to \getMusic uses paths relative to this:
 % \getMusic meta retrieves mymusic/piece/42/meta
-% typeset the music, but only if this file is compiled directly
+% typeset the music with \lalilyCreate -- but only if this file is compiled directly
 % if you include this file all music is stored, but is not typeset and can be used elsewhere
 \lalilyTest
 ```
