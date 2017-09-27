@@ -15,9 +15,10 @@ Licence: GPL V3
 ## How it works
 
 To understand how the template engine works it might be helpful to
-read my article about "Trees, Music and LilyPond".  The music is
-organized hierarchically and is accessed by path. A template is a
-music-function that is called with a current path set.
+read my article about
+["Trees, Music and LilyPond"](http://lilypondblog.org/2014/07/trees-music-and-lilypond/).
+The music is organized hierarchically and is accessed by path. A
+template is a music-function that is called with a current path set.
 
 To typeset a score a template and an a-list with properties has to be
 assigned to the path dedicated to the music. Then `\lalilyCreate`
