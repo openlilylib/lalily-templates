@@ -103,7 +103,7 @@
      #{
        \new $staff-context = $name \with {
          $(if (ly:context-mod? staff-mods) staff-mods)
-         \editionID $piece
+         \editionID ##f $piece
          $(if (string? midi-instrument) #{ \with { midiInstrument = #midi-instrument } #} #{ \with {} #})
          %$(if (string? instrument-name) #{ \with { instrumentName = #instrument-name } #} #{ \with {} #})
          %$(if (string? short-name) #{ \with { instrumentName = #short-name } #} #{ \with {} #})

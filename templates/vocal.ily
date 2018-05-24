@@ -151,7 +151,7 @@ create one staff with one vocal voice and associated lyrics.
      #{
        \new $voice-context = $vocname \with {
          $(if (ly:context-mod? voice-mods) voice-mods #{ \with {} #})
-         $(if (not (eq? 'Voice voice-context)) #{ \with { \editionID $piece } #})
+         $(if (not (eq? 'Voice voice-context)) #{ \with { \editionID ##f $piece } #})
        } <<
          \getMusicDeep meta
          {
@@ -178,7 +178,7 @@ create one staff with one vocal voice and associated lyrics.
                       $(if (ly:context-mod? lyric-mods) lyric-mods #{ \with {} #})
                       $(let ((lyric-mods (assoc-get (glue-symbol `(lyric-mods ,v) "-") options #f #f)))
                          (if (ly:context-mod? lyric-mods) lyric-mods #{ \with {} #}))
-                      \editionID $piece
+                      \editionID ##f $piece
                     } \lyricsto $voc { \getMusic #`(lyrics ,@v) }
                   #}) rr))
          #{
@@ -186,7 +186,7 @@ create one staff with one vocal voice and associated lyrics.
              $(if (ly:context-mod? lyric-mods) lyric-mods #{ \with {} #})
              $(let ((lyric-mods (assoc-get (glue-symbol `(lyric-mods ,@v) "-") options #f #f)))
                 (if (ly:context-mod? lyric-mods) lyric-mods #{ \with {} #}))
-             \editionID $piece
+             \editionID ##f $piece
            } \lyricsto $voc { \getMusic #`(lyrics ,@v) }
          #}
          )))
@@ -216,7 +216,7 @@ create one staff with one vocal voice and associated lyrics.
        #{
          \new StaffGroup \with {
            $(if (ly:context-mod? groupmod) groupmod)
-           \editionID $piece
+           \editionID ##f $piece
            \override BarLine.allow-span-bar = $(if (or spanbar mensur) #t #f )
            \override BarLine.transparent = $(if mensur #t #f )
          } $(make-music 'SimultaneousMusic 'elements

@@ -1,3 +1,4 @@
+\version "2.19.80"
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                             %
 % This file is part of openLilyLib,                                           %
@@ -33,6 +34,10 @@
 
 \include "oll-core/package.ily"
 \loadPackage lalily-templates
+
+\consistToContexts #edition-engraver Score.Staff.Voice
+
+\setEditions sheet
 
 % options for full score
 \optionsInit opts
@@ -79,6 +84,11 @@ trumpet."_order" = I.II.III
 \setMusicFolder song.test
 \setScoreOptions #'() #opts
 \setTitle "Hallo Welt"
+
+% you can shorten long edition-context IDs with the current music path:
+\editionMod sheet 1 0/4 \musicPath choir.sop.Voice { <>\p\< }
+\editionMod sheet 1 4/4 \musicPath choir.sop.Voice { <>\! }
+\editionMod sheet 1 1/4 \musicPath piano.right.Staff \once \override NoteHead.color = #red
 
 \putMusic meta {
   \key f \major \time 4/4 s1 \bar "|."
