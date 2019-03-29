@@ -105,8 +105,8 @@
          $(if (ly:context-mod? staff-mods) staff-mods)
          \editionID ##f $piece
          $(if (string? midi-instrument) #{ \with { midiInstrument = #midi-instrument } #} #{ \with {} #})
-         %$(if (string? instrument-name) #{ \with { instrumentName = #instrument-name } #} #{ \with {} #})
-         %$(if (string? short-name) #{ \with { instrumentName = #short-name } #} #{ \with {} #})
+         $(if (string? instrument-name) #{ \with { instrumentName = #instrument-name } #} #{ \with {} #})
+         $(if (string? short-name) #{ \with { instrumentName = #short-name } #} #{ \with {} #})
        } \new $voice-context = $name \with {
          $(if (ly:context-mod? voice-mods) voice-mods)
        } {
