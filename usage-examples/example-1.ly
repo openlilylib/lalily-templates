@@ -35,10 +35,12 @@
 \include "oll-core/package.ily"
 \loadPackage lalily-templates
 
+% edition-engraver is loaded by lalily-templates
 \consistToContexts #edition-engraver Score.Staff.Voice
-
 \setEditions sheet
 
+
+%%% create score structure
 % options for full score
 \optionsInit opts
 % these settings are for demonstration (and testing)
@@ -51,7 +53,8 @@
 % a choir (SATB is default)
 % TODO grouping will be rewritten like the global root. That is all meta data has a prefix '_', all other parts are assumed voices
 \optionsAddL opts choir."_template" lalily.vocal.group
-\optionsAddL opts choir.lyrics LY_UP.LY_UP.melody
+%\optionsAddL opts choir.lyrics LY_UP.LY_UP.melody   One can use either 'LY_UP' or '".."'
+\optionsAddL opts choir.lyrics ".."."..".melody
 \optionsAddL opts melody."_template" lalily.vocal
 % another vocal part
 \optionsAdd opts melody.vocname "melody"
@@ -67,8 +70,11 @@ trumpet."_group-mods" = \with { \override NoteHead.color = #darkgreen }
 trumpet.I."_template" = lalily.instrument.trumpet
 trumpet.II."_template" = lalily.instrument.trumpet
 trumpet."_order" = I.II.III
+
+%%% bind score (sub)structure to path 'song.test.trumpet'
 \setDefaultTemplate song.test.trumpet group #trumpet
 
+%%% add music
 \putMusic I \relative { bes'4 a c b }
 \putMusic II \relative { bes4 a c b }
 
@@ -85,10 +91,11 @@ trumpet."_order" = I.II.III
 \setScoreOptions #'() #opts
 \setTitle "Hallo Welt"
 
+base = \getMusicFolder
 % you can shorten long edition-context IDs with the current music path:
 \editionMod sheet 1 0/4 \musicPath choir.sop.Voice { <>\p\< }
 \editionMod sheet 1 4/4 \musicPath choir.sop.Voice { <>\! }
-\editionMod sheet 1 1/4 \musicPath piano.right.Staff \once \override NoteHead.color = #red
+\editionMod sheet 1 1/4 \base.piano.right.Staff \once \override NoteHead.color = #red
 
 \putMusic meta {
   \key f \major \time 4/4 s1 \bar "|."
@@ -111,9 +118,10 @@ trumpet."_order" = I.II.III
 
 % if you include this file, the score will not be typeset unless you call \lalilyCreate or another creation function
 % print full score
+%\setMusicFolder \base % we don't actually need to set the music folder here as it is already correct
 \lalilyTest
 
 % print brass part
-\setMusicFolder song.test.trumpet
+\setMusicFolder \base.trumpet
 \lalilyTest
 
