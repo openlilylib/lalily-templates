@@ -64,6 +64,15 @@
                                (midi-instrument . "english horn")
                                ))))
 
+\registerTemplate lalily.instrument.bassoon
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! options `((name . "bassoon")
+                               (midi-instrument . "bassoon")
+                               (clef . "bass")
+                               ))))
+
+
 \registerTemplate lalily.instrument.sax.sop
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece

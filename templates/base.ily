@@ -39,7 +39,7 @@
    (let ((tmpl (assoc-get '_template options #f)))
      (if (string? tmpl) (set! tmpl (string->symbol tmpl)))
      (if (symbol? tmpl) (set! tmpl (list tmpl)))
-     (if (list? tmpl)
+     (if (and (list? tmpl) (not (equal? tmpl '(generic))))
          (callTemplate #t tmpl #t piece options)
          (get-music piece))
      ))
