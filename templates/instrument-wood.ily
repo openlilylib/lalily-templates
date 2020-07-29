@@ -34,6 +34,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% woodwind
 
+\registerTemplate lalily.instrument.piccolo
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! options `((name . "piccolo")
+                               (transposition . ,(ly:make-pitch 1 0 0))
+                               (midi-instrument . "piccolo")
+                               ))))
+
 \registerTemplate lalily.instrument.flute
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece

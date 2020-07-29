@@ -37,6 +37,8 @@
 \registerTemplate generic
 #(define-music-function (piece options)(list? list?)
    (let ((tmpl (assoc-get '_template options #f)))
+     (if (string? tmpl) (set! tmpl (string->symbol tmpl)))
+     (if (symbol? tmpl) (set! tmpl (list tmpl)))
      (if (list? tmpl)
          (callTemplate #t tmpl #t piece options)
          (get-music piece))
@@ -45,6 +47,8 @@
 \registerTemplate NOTFOUND
 #(define-music-function (piece options)(list? list?)
    (let ((tmpl (assoc-get '_template options #f)))
+     (if (string? tmpl) (set! tmpl (string->symbol tmpl)))
+     (if (symbol? tmpl) (set! tmpl (list tmpl)))
      (if (list? tmpl)
          (callTemplate #t tmpl #t piece options)
          (begin
@@ -98,6 +102,8 @@ deprecateTemplate =
                                  (music (assoc-get '_music opts (create-music-path #f (list (car p)))))
                                  (opts (assoc-set-all! (get-default-options music) opts))
                                  (template (assoc-get '_template opts (get-default-template music)))
+                                 (template (if (string? template) (string->symbol template) template))
+                                 (template (if (list? template) template (list template)))
                                  (path (assoc-get '_music opts (list (car p))))
                                  (part #{ \callTemplate ##t #template #path #opts #})
                                  )
@@ -107,6 +113,7 @@ deprecateTemplate =
                             )) elms))
                      (make-music 'SimultaneousMusic 'void #t)))
           )
+     (if (string? group) (set! group (string->symbol group)))
      (if (symbol? group)
          #{
            \new $group \with {
@@ -164,6 +171,8 @@ deprecateTemplate =
               (set! p (naturalize-pitch p))
               (ly:music-set-property! music 'pitch p)))
          music))
+     (if (string? template) (set! template (string->symbol template)))
+     (if (symbol? template) (set! template (list template)))
      (if (not (list? pce))(set! pce (list pce)))
      (let ((transp
             (ly:music-transpose
