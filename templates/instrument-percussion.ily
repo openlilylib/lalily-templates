@@ -37,8 +37,9 @@
 \registerTemplate lalily.instrument.timpani
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "timpani")
-                               (midi-instrument . "timpani")
-                               (clef . "bass")
-                               ))))
+     (assoc-set-all! `((name . "timpani")
+                       (midi-instrument . "timpani")
+                       (clef . "bass")
+                       ) options)
+     ))
 

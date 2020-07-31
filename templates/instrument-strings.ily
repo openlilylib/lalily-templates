@@ -58,3 +58,13 @@
                        (clef . "bass")
                        ) options)
      ))
+\registerTemplate lalily.instrument.contrabass
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! '((name . "")
+                       (midi-instrument . "cello")
+                       (clef . "bass_8")
+                       ) options)
+     ))
+
+

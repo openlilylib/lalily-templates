@@ -37,70 +37,79 @@
 \registerTemplate lalily.instrument.piccolo
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "piccolo")
-                               (transposition . ,(ly:make-pitch 1 0 0))
-                               (midi-instrument . "piccolo")
-                               ))))
+     (assoc-set-all! `((name . "piccolo")
+                       (transposition . ,(ly:make-pitch 1 0 0))
+                       (midi-instrument . "piccolo")
+                       ) options)
+     ))
 
 \registerTemplate lalily.instrument.flute
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "flute")
-                               (midi-instrument . "flute")
-                               ))))
+     (assoc-set-all! `((name . "flute")
+                       (midi-instrument . "flute")
+                       ) options)
+     ))
 
 \registerTemplate lalily.instrument.oboe
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "oboe")
-                               (midi-instrument . "oboe")
-                               ))))
+     (assoc-set-all! `((name . "oboe")
+                       (midi-instrument . "oboe")
+                       ) options)
+     ))
 
 \registerTemplate lalily.instrument.english-horn
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "english-horn")
-                               (transposition . ,(ly:make-pitch -1 3 0))
-                               (midi-instrument . "english horn")
-                               ))))
+     (assoc-set-all! `((name . "english-horn")
+                       (transposition . ,(ly:make-pitch -1 3 0))
+                       (midi-instrument . "english horn")
+                       ) options)
+     ))
 
 \registerTemplate lalily.instrument.bassoon
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
-     (assoc-set-all! options `((name . "bassoon")
-                               (midi-instrument . "bassoon")
-                               (clef . "bass")
-                               ))))
+     (assoc-set-all! `((name . "bassoon")
+                       (midi-instrument . "bassoon")
+                       (clef . "bass")
+                       ) options)
+     ))
 
 
 \registerTemplate lalily.instrument.sax.sop
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
-     (assoc-set-all! options `((name . "saxsop")
-                               (transposition . ,(ly:make-pitch -1 6 -1/2)) ; b
-                               (midi-instrument . "soprano sax")
-                               ))))
+     (assoc-set-all! `((name . "saxsop")
+                       (transposition . ,(ly:make-pitch -1 6 -1/2)) ; b
+                       (midi-instrument . "soprano sax")
+                       ) options)
+     ))
 \registerTemplate lalily.instrument.sax.alt
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
-     (assoc-set-all! options `((name . "saxalt")
-                               (transposition . ,(ly:make-pitch -1 2 -1/2)) ; ees
-                               (midi-instrument . "alto sax")
-                               ))))
+     (assoc-set-all! `((name . "saxalt")
+                       (transposition . ,(ly:make-pitch -1 2 -1/2)) ; ees
+                       (midi-instrument . "alto sax")
+                       ) options)
+     ))
 
 \registerTemplate lalily.instrument.sax.ten
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
-     (assoc-set-all! options `((name . "saxten")
-                               (transposition . ,(ly:make-pitch -2 6 -1/2)) ; b
-                               (midi-instrument . "tenor sax")
-                               ))))
+     (assoc-set-all! `((name . "saxten")
+                       (transposition . ,(ly:make-pitch -2 6 -1/2)) ; b
+                       (midi-instrument . "tenor sax")
+                       ) options)
+     ))
 \registerTemplate lalily.instrument.sax.bar
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
-     (assoc-set-all! options `((name . "saxbar")
-                               (transposition . ,(ly:make-pitch -2 2 -1/2)) ; ees
-                               (midi-instrument . "baritone sax")
-                               ))))
+     (assoc-set-all! `((name . "saxbar")
+                       (transposition . ,(ly:make-pitch -2 2 -1/2)) ; ees
+                       (midi-instrument . "baritone sax")
+                       ) options)
+     ))
 
 
