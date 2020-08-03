@@ -49,9 +49,11 @@
    (let ((instrument-name (ly:assoc-get 'instrument-name options #f))
          (short-name (ly:assoc-get 'short-name options #f))
          (line-positions (ly:assoc-get 'line-positions options '(0)))
+         (staff-mods (ly:assoc-get 'staff-mods options #f))
          )
      #{
        \new DrumStaff \with {
+         $(if (ly:context-mod? staff-mods) staff-mods)
          instrumentName = $instrument-name
          shortInstrumentName = $short-name
          \override StaffSymbol.line-positions = #line-positions
