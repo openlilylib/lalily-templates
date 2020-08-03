@@ -43,3 +43,24 @@
                        ) options)
      ))
 
+
+\registerTemplate lalily.percussions.generic
+#(define-music-function (piece options)(list? list?)
+   (let ((instrument-name (ly:assoc-get 'instrument-name options #f))
+         (short-name (ly:assoc-get 'short-name options #f))
+         (line-positions (ly:assoc-get 'line-positions options '(0)))
+         )
+     #{
+       \new DrumStaff \with {
+         instrumentName = $instrument-name
+         shortInstrumentName = $short-name
+         \override StaffSymbol.line-positions = #line-positions
+         %drumStyleTable = #(alist->hash-table mydrums)
+       } <<
+         \getMusicDeep meta
+         { R1*4 | d2 d4 r16 d d d | d1 }
+       >>
+     #}))
+
+
+
