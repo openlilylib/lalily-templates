@@ -48,6 +48,7 @@
 #(define-music-function (piece options)(list? list?)
    (let* ((instrument-name (ly:assoc-get 'instrument-name options #f))
           (short-name (ly:assoc-get 'short-name options #f))
+          (line-count (ly:assoc-get 'line-count options #f))
           (line-positions (ly:assoc-get 'line-positions options #f))
           (drum-style-table (ly:assoc-get 'drumStyleTable options percussion-style))
           (drum-style-table (if (list? drum-style-table) (alist->hash-table drum-style-table) drum-style-table))
@@ -58,7 +59,8 @@
          $(if (ly:context-mod? staff-mods) staff-mods)
          instrumentName = $instrument-name
          shortInstrumentName = $short-name
-         \override StaffSymbol.line-positions = #line-positions
+         $(if (integer? line-count) #{ \with { \override StaffSymbol.line-count = #line-count } #})
+         $(if (list? line-positions) #{ \with { \override StaffSymbol.line-positions = #line-positions } #})
          drumStyleTable = #drum-style-table
        } <<
          \getMusicDeep meta
