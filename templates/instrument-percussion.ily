@@ -46,21 +46,23 @@
 
 \registerTemplate lalily.percussions.generic
 #(define-music-function (piece options)(list? list?)
-   (let ((instrument-name (ly:assoc-get 'instrument-name options #f))
-         (short-name (ly:assoc-get 'short-name options #f))
-         (line-positions (ly:assoc-get 'line-positions options '(0)))
-         (staff-mods (ly:assoc-get 'staff-mods options #f))
-         )
+   (let* ((instrument-name (ly:assoc-get 'instrument-name options #f))
+          (short-name (ly:assoc-get 'short-name options #f))
+          (line-positions (ly:assoc-get 'line-positions options #f))
+          (drum-style-table (ly:assoc-get 'drumStyleTable options percussion-style))
+          (drum-style-table (if (list? drum-style-table) (alist->hash-table drum-style-table) drum-style-table))
+          (staff-mods (ly:assoc-get 'staff-mods options #f))
+          )
      #{
        \new DrumStaff \with {
          $(if (ly:context-mod? staff-mods) staff-mods)
          instrumentName = $instrument-name
          shortInstrumentName = $short-name
          \override StaffSymbol.line-positions = #line-positions
-         %drumStyleTable = #(alist->hash-table mydrums)
+         drumStyleTable = #drum-style-table
        } <<
          \getMusicDeep meta
-         { R1*4 | d2 d4 r16 d d d | d1 }
+         \getMusic #'()
        >>
      #}))
 
