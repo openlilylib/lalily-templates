@@ -63,7 +63,7 @@
    (call-template (create-template-path #f '(..)) piece
      (assoc-set-all! '((name . "contrabass")
                        (midi-instrument . "cello")
-                       (clef . "bass_8")
+                       (clef . "bass")
                        ) options)
      ))
 

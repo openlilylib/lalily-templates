@@ -51,6 +51,7 @@
                        ) options)
      ))
 
+
 \registerTemplate lalily.instrument.oboe
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(..)) piece
@@ -78,11 +79,22 @@
      ))
 
 
+\registerTemplate lalily.instrument.clarinet
+#(define-music-function (piece options)(list? list?)
+   (call-template (create-template-path #f '(..)) piece
+     (assoc-set-all! `((name . "clarinet")
+                       (transposition . ,(ly:make-pitch -1 6 -1/2)) ; bes
+                       (midi-instrument . "clarinet")
+                       (output-concert-pitch . #f)
+                       ) options)
+     ))
+
+
 \registerTemplate lalily.instrument.sax.sop
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
      (assoc-set-all! `((name . "saxsop")
-                       (transposition . ,(ly:make-pitch -1 6 -1/2)) ; b
+                       (transposition . ,(ly:make-pitch -1 6 -1/2)) ; bes
                        (midi-instrument . "soprano sax")
                        ) options)
      ))
@@ -99,7 +111,7 @@
 #(define-music-function (piece options)(list? list?)
    (call-template (create-template-path #f '(.. ..)) piece
      (assoc-set-all! `((name . "saxten")
-                       (transposition . ,(ly:make-pitch -2 6 -1/2)) ; b
+                       (transposition . ,(ly:make-pitch -2 6 -1/2)) ; bes
                        (midi-instrument . "tenor sax")
                        ) options)
      ))
