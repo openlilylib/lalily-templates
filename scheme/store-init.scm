@@ -529,6 +529,15 @@
 (define-public setOpus
   (define-music-function (value)(markup?)
     (music-folder-header-set! 'opus value)))
+(define-public setComposer
+  (define-music-function (value)(markup?)
+    (music-folder-header-set! 'composer value)))
+(define-public setPoet
+  (define-music-function (value)(markup?)
+    (music-folder-header-set! 'poet value)))
+(define-public setArranger
+  (define-music-function (value)(markup?)
+    (music-folder-header-set! 'arranger value)))
 (define-public setInstrument
   (define-music-function (value)(markup?)
     (music-folder-header-set! 'instrument value)))
