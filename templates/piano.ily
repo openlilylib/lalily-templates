@@ -55,7 +55,7 @@
            $(if (ly:context-mod? rmods) rmods)
          } <<
            \keepWithTag #'piano-right \getMusicDeep {} #'meta
-           \keepWithTag #'piano-right { \getMusic {} global \getMusic right }
+           \keepWithTag #'piano-right { \getMusic {} global \clef $rclef \getMusic right }
          >>
          \new Dynamics \with {
            \editionID dynamics
