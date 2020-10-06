@@ -55,9 +55,11 @@
 \optionsAddL opts choir."_template" lalily.vocal.group
 %\optionsAddL opts choir.lyrics LY_UP.LY_UP.melody   One can use either 'LY_UP' or '".."'
 \optionsAddL opts choir.lyrics ".."."..".melody
-\optionsAddL opts melody."_template" lalily.vocal
+
 % another vocal part
+\optionsAddL opts melody."_template" lalily.vocal
 \optionsAdd opts melody.vocname "melody"
+
 % piano
 \optionsAddL opts piano."_template" lalily.piano
 

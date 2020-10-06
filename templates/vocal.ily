@@ -191,6 +191,7 @@ create one staff with one vocal voice and associated lyrics.
          #}
          )))
 
+% TODO parametrize default vocal group
 \optionsInit lalily_vocal_group_default
 \optionsAdd lalily_vocal_group_default sop.staff-mods \with { instrumentName = "Sopran" }
 \optionsAdd lalily_vocal_group_default alt.staff-mods \with { instrumentName = "Alt" }
