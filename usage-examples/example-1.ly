@@ -26,7 +26,7 @@
 % openLilyLib is maintained by Urs Liska, ul@openlilylib.org                  %
 % lalily-templates is maintained by Jan-Peter Voigt, jp.voigt@gmx.de          %
 % and others.                                                                 %
-%       Copyright Jan-Peter Voigt, Urs Liska, 2017                            %
+%       Copyright Jan-Peter Voigt, Urs Liska, 2017, 2020                      %
 %                                                                             %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
