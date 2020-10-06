@@ -47,7 +47,7 @@
 \optionsAddL opts "_template" group
 
 % two trumpets in B flat (default, other transpositions possible with property 'transposition)
-\optionsAdd opts trumpet.III.transposition #(ly:make-pitch 0 3) % transposition F
+\optionsAdd opts trumpet.III.transposition f' % transposition F
 \optionsAdd opts trumpet.III.output-concert-pitch ##f % the transposition of trumpet.III will only effective in the full score!
 
 % a choir (SATB is default)

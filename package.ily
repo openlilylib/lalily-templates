@@ -148,7 +148,7 @@ lalilyScore =
      (if domidi (ly:score-add-output-def! score (get-music-folder-midi)))
      (let ((title (get-music-folder-header-field 'toc-label)))
        (if (not (markup? title))(set! title (get-music-folder-header-field 'title)))
-       (if (markup? title) (add-music #{ \tocItem $title #}))) ; tocPart
+       (if (markup? title) (add-music #{ \tocItem toc $title #}))) ; tocPart
      (add-sco-mup pre-markup score post-markup)
      ))
 
@@ -190,8 +190,8 @@ lalilyBookpart =
      (let ((title (get-music-folder-header-field 'toc-label)))
        (if (not (markup? title))(set! title (get-music-folder-header-field 'title)))
        (if (markup? title)
-           (if doPart (add-music #{ \tocItem $title #}) ; tocPart
-               (add-music #{ \tocItem $title #})))) ; tocCollection
+           (if doPart (add-music #{ \tocItem toc $title #}) ; tocPart
+               (add-music #{ \tocItem toc $title #})))) ; tocCollection
 
      (if print-all-headers (set! options (assoc-set! options 'clear-headers headers)))
      (for-each
