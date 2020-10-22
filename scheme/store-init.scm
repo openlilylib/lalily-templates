@@ -275,7 +275,7 @@
            (assoc-get (car op) ol #f))
           (else #f))))
      (if (list? opts)
-         (getval opts path)
+         (getval opts vkey)
          (begin
           (ly:input-warning (*location*) "~A is not list (~A)" name opts)
           #f)
